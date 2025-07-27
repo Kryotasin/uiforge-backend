@@ -1,0 +1,47 @@
+{
+  "name": "blueprint-ai-backend",
+  "version": "0.0.1",
+  "description": " This is the backend for the most awesome project! ",
+  "keywords": [
+    "ai",
+    "backend",
+    "backe-end",
+    "ux",
+    "ui",
+    "ux/ui",
+    "ux-ui",
+    "uxui",
+    "react",
+    "nextjs",
+    "code",
+    "converter",
+    "designtocode"
+  ],
+  "homepage": "https://github.com/Kryotasin/blueprint-ai-backend#readme",
+  "bugs": {
+    "url": "https://github.com/Kryotasin/blueprint-ai-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kryotasin/blueprint-ai-backend.git"
+  },
+  "license": "MIT",
+  "author": "Kshitij Sinha",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
