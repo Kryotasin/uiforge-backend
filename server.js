@@ -18,11 +18,10 @@ const port = 8000;
 
 // Configure CORS
 const corsOptions = {
-    origin: process.env.BAI_API_URL,
+    origin: process.env.BAI_API_URL + ':' + process.env.BAI_UI_PORT,
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-    optionsSuccessStatus: 204
+    credentials: true
 }
 server.use(cors(corsOptions));
 
