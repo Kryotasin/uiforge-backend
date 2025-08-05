@@ -45,6 +45,34 @@ router.get('/file/:fileKey', authenticateUser, async (req, res) => {
     }
 });
 
+// Get instance data
+router.get('/instance/:fileKey/:nodeId', authenticateUser, async (req, res) => {
+    try {
+        const { fileKey, nodeId } = req.params;
+        
+        // Call Figma API to get specific node data
+        const response = await axios.get(`https://api.figma.com/v1/files/${fileKey}/nodes`, {
+            headers: { 'Authorization': `Bearer ${req.user.figmaToken}` },
+            params: { ids: nodeId }
+        });
+
+        const nodeData = response.data.nodes[nodeId];
+        if (!nodeData) {
+            return res.status(404).json({ error: 'Node not found' });
+        }
+
+        res.status(200).json({ 
+            nodeId,
+            fileKey,
+            data: nodeData.document,
+            lastModified: response.data.lastModified,
+            thumbnailUrl: response.data.thumbnailUrl
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // Transform Figma data to tree structure
 function buildTreeStructure(node) {
     return {
