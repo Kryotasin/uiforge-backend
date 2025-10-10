@@ -91,30 +91,35 @@ server.use(`${process.env.BAI_API_BASE_VERSION}/figma`, figmaRoutes);
 
 async function startServer() {
     try {
-        const database = await connect();
-        server.locals.db = database;
+        // Try to connect to MongoDB, but allow server to start even if it fails
+        try {
+            const database = await connect();
+            server.locals.db = database;
+            server.use(`${process.env.BAI_API_BASE_VERSION}/db/mongo`, mongoRoutes);
+        } catch (dbError) {
+            console.error('MongoDB connection failed - starting without database');
+            server.locals.db = null;
+        }
 
-
-        server.use(`${process.env.BAI_API_BASE_VERSION}/db/mongo`, mongoRoutes);
         server.listen(process.env.BAI_API_PORT, () => {
-            console.log('Started server...');
+            console.log(`Server started on port ${process.env.BAI_API_PORT}`);
         })
 
         // Handle graceful shutdown
         process.on('SIGINT', async () => {
             console.log("SIGINT signal: closing HTTP and DB connections");
-            await disconnect();
+            if (server.locals.db) await disconnect();
             process.exit(0);
         })
 
         process.on('SIGTERM', async () => {
             console.log('SIGTERM signal received: closing HTTP and DB connections');
-            await disconnect();
+            if (server.locals.db) await disconnect();
             process.exit(0);
         })
     }
     catch (error) {
-        console.log("Failed to start server, db connection error", error);
+        console.log("Failed to start server", error);
         process.exit(1);
     }
 }
